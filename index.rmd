@@ -1,0 +1,61 @@
+---
+title: "Reservas Internacionais 2000-2020"
+output: 
+  html_document:
+    code_folding: show
+    theme:
+      bg: "#202123"
+      fg: "#B8BCC2"
+      primary: "#EA80FC"
+      base_font:
+        google: Prompt
+      heading_font:
+        google: Proza Libre
+      version: 3
+---
+
+```{r setup, include=FALSE}
+if (requireNamespace("thematic")) 
+  thematic::thematic_rmd(font = "auto")
+```
+
+## Descrição
+
+As reservas internacionais são o estoque de ativos que o Brasil possui em moeda estrangeira. Essa reserva funciona como um “colchão de segurança” que é importante sobretudo em momentos de fortes oscilações da moeda brasileira em relação ao dólar. O agente responsável pela gestão e administração das reservas no Brasil é o Banco Central.
+Como será visto adiante, o montante de reservas brasileiras cresceu consideravelmente nas últimas décadas. 
+
+Para mais detalhes, consultar: 
+
+> <https://www.bcb.gov.br/estabilidadefinanceira/reservasinternacionais>
+
+```{r fig.align='center', fig.cap="Dólar", out.width="50%"}
+knitr::include_graphics("img/dolar.jpg")
+```
+
+
+```{r, echo=FALSE}
+library (readr)
+caminho <- "dados/reservas.csv" 
+reservas <- readr::read_csv2(caminho)
+```
+
+
+## Análise
+A base de dados "reservas" apresenta dados referentes aos valores anuais das reservas internacionais possuídas pelo Brasil ao longo de `r nrow(reservas)` anos, em milhões de dólares. Os dados foram coletados entre os anos de `r min(reservas$Ano)` e `r max(reservas$Ano)`. O estoque mínimo de reservas foi de `r min(reservas$Valor)`, no ano de 2000.Já o valor máximo de reservas foi de `r max (reservas$Valor)`, no ano de 2018. Os dados foram obtidos através do Sistema Gerenciador de Séries Temporais, do Banco Central do Brasil.
+
+
+## Tabela
+
+```{r, echo=FALSE}
+reactable::reactable(reservas,)
+```
+
+## Gráfico
+
+```{r, echo=FALSE, fig.showtext=TRUE}
+library(ggplot2)
+ggplot(reservas) + geom_line(aes(x=Ano, y=Valor))
+```
+
+
+
